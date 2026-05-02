@@ -5,10 +5,11 @@
 import { jest } from "@jest/globals";
 
 // Mock global fetch before importing client
-const mockFetch = jest.fn();
+const mockFetch = jest.fn<typeof fetch>();
 global.fetch = mockFetch as unknown as typeof fetch;
 
 import { UpresClient } from "../src/client.js";
+import type { Job } from "../src/types.js";
 
 function mockResponse(body: unknown, status = 200): Response {
   return {
@@ -20,7 +21,7 @@ function mockResponse(body: unknown, status = 200): Response {
   } as unknown as Response;
 }
 
-const MOCK_JOB = {
+const MOCK_JOB: Job = {
   id: "550e8400-e29b-41d4-a716-446655440000",
   status: "completed",
   model: "wavespeed-ai/real-esrgan",
@@ -136,10 +137,14 @@ describe("UpresClient", () => {
 
   test("downloadResult writes file to disk", async () => {
     const testBuffer = Buffer.from("fake-image-data");
+    const ab = testBuffer.buffer.slice(
+      testBuffer.byteOffset,
+      testBuffer.byteOffset + testBuffer.byteLength,
+    );
     mockFetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
-      arrayBuffer: async () => testBuffer.buffer,
+      arrayBuffer: async () => ab,
       headers: new Headers(),
     } as unknown as Response);
 
