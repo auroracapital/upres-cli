@@ -43,7 +43,10 @@
     "upscaler",
     "ai-tools",
     "image-upscaler",
-    "ai-image-upscaler"
+    "ai-image-upscaler",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol"
   ],
   "author": "upres.ai <support@upres.ai>",
   "license": "MIT",

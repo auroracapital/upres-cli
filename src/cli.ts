@@ -44,6 +44,7 @@ COMMANDS
   models               List available models
   jobs                 List recent jobs
   account              Show quota and plan info
+  mcp                  Speak MCP over stdin/stdout for Claude, Cursor, Hermes
   version              Print version
 
 OPTIONS
@@ -305,6 +306,11 @@ async function main(): Promise<void> {
     case "account":
       await cmdAccount(flags);
       break;
+    case "mcp": {
+      const { startStdio } = await import("./mcp.js");
+      startStdio();
+      return;
+    }
     default:
       console.error(`Unknown command: ${command}\nRun "upres --help" for usage.`);
       process.exit(1);

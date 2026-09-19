@@ -188,6 +188,30 @@ Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [
 
 ---
 
+## MCP (Claude, Cursor, Hermes)
+
+```bash
+claude mcp add upres -- npx -y upres-cli mcp
+```
+
+Or in `claude_desktop_config.json` / Cursor:
+
+```json
+{
+  "mcpServers": {
+    "upres": {
+      "command": "npx",
+      "args": ["-y", "upres-cli", "mcp"],
+      "env": { "UPRES_API_KEY": "upres_yourkey" }
+    }
+  }
+}
+```
+
+Tools: `upres_list_models`, `upres_get_credits`, `upres_upscale_image`, `upres_upscale_video`, `upres_get_job`.
+
+---
+
 ## Free tier for open-source projects
 
 If you're building something open-source on top of the API, email [support@upres.ai](mailto:support@upres.ai) with your repo link. We offer 500 ops/month for qualifying OSS projects.
