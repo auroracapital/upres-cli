@@ -191,7 +191,7 @@ Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [
 ## MCP (Claude, Cursor, Hermes)
 
 ```bash
-claude mcp add upres -- npx -y upres-cli mcp
+claude mcp add upres -- npx -y github:auroracapital/upres-cli mcp
 ```
 
 Or in `claude_desktop_config.json` / Cursor:
@@ -201,7 +201,7 @@ Or in `claude_desktop_config.json` / Cursor:
   "mcpServers": {
     "upres": {
       "command": "npx",
-      "args": ["-y", "upres-cli", "mcp"],
+      "args": ["-y", "github:auroracapital/upres-cli", "mcp"],
       "env": { "UPRES_API_KEY": "upres_yourkey" }
     }
   }
