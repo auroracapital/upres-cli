@@ -1,0 +1,20 @@
+name: MCP Registry Health
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"  # every 6 hours, staggered
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry-health:
+    name: MCP registry listing healthy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify MCP registry entry matches GitHub release
+        run: bash scripts/check-mcp-registry.sh io.github.auroracapital/upres-cli
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
