@@ -13,3 +13,5 @@ venv/
 *.tsbuildinfo
 coverage/
 .nyc_output/
+upres-cli-*.mcpb
+mcpb/dist

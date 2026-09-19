@@ -1,0 +1,78 @@
+{
+  "$schema": "../vendor/mcpb/mcpb_manifest.json",
+  "manifest_version": "0.3",
+  "name": "upres-cli",
+  "display_name": "UpRes",
+  "version": "0.2.0",
+  "description": "UpRes MCP server: list models, query credits, submit 4K image and video upscale jobs via the UpRes API.",
+  "long_description": "UpRes MCP server: list models, query credits, submit 4K image and video upscale jobs via the UpRes API. Tools: upres_list_models, upres_get_credits, upres_upscale_image, upres_upscale_video, upres_get_job.",
+  "author": {
+    "name": "Aurora Capital",
+    "url": "https://upres.ai",
+    "email": "support@upres.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auroracapital/upres-cli.git"
+  },
+  "homepage": "https://upres.ai",
+  "documentation": "https://upres.ai/docs/api",
+  "support": "https://upres.ai",
+  "icon": "icon.png",
+  "screenshots": [],
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "upres",
+    "upscaler",
+    "ai-image-upscaler",
+    "ai-video-upscaler"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/cli.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/dist/cli.js",
+        "mcp"
+      ],
+      "env": {
+        "UPRES_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "UpRes API key",
+      "description": "UpRes API key from https://upres.ai/account \u2014 required for upscale and credit tools.",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "tools": [
+    {
+      "name": "upres_list_models",
+      "description": "List UpRes upscale models (flare, prism, lumen, mirage, motion, motion-x) with use cases."
+    },
+    {
+      "name": "upres_get_credits",
+      "description": "Show recent job count for the authenticated UpRes API key as a quota proxy."
+    },
+    {
+      "name": "upres_upscale_image",
+      "description": "Submit an image upscale job from a public URL. Models: flare, prism, lumen, mirage."
+    },
+    {
+      "name": "upres_upscale_video",
+      "description": "Submit a video upscale job from a public URL. Models: motion, motion-x."
+    },
+    {
+      "name": "upres_get_job",
+      "description": "Get status and result_url of an UpRes job by id."
+    }
+  ]
+}
