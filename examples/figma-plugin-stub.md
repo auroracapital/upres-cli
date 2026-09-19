@@ -75,7 +75,7 @@ async function waitForJob(jobId, apiKey) {
 
 ## Getting an API key
 
-1. Create a Business account at https://upres.ai/pricing ($49/mo)
+1. Create a Studio account at https://upres.ai/pricing ($39/mo)
 2. Go to https://upres.ai/account/api-keys
 3. Click **Generate new key** — copy it, it's shown once
 

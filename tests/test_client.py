@@ -12,7 +12,7 @@ from python.upres.client import UpresClient, AuthError, QuotaExceededError, Upre
 MOCK_JOB = {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "status": "completed",
-    "model": "wavespeed-ai/real-esrgan",
+    "model": "flare",
     "scale": 4,
     "result_url": "https://cdn.upres.ai/results/abc123.png",
     "error": None,
@@ -41,7 +41,7 @@ def test_create_job_from_url(client):
     )
     job = client.create_job_from_url(
         "https://example.com/photo.jpg",
-        model="wavespeed-ai/real-esrgan",
+        model="flare",
         scale=4,
     )
     assert job["id"] == MOCK_JOB["id"]
@@ -91,7 +91,7 @@ def test_create_job_from_file(client, tmp_path):
     respx.post("https://api.upres.ai/v1/jobs").mock(
         return_value=httpx.Response(201, json=MOCK_JOB)
     )
-    job = client.create_job_from_file(img, model="wavespeed-ai/real-esrgan", scale=4)
+    job = client.create_job_from_file(img, model="flare", scale=4)
     assert job["id"] == MOCK_JOB["id"]
 
 

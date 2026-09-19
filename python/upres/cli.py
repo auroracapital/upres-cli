@@ -1,7 +1,7 @@
 """upres CLI — Python entry point.
 
 Usage:
-  upres upscale photo.jpg --model real-esrgan --scale 4
+  upres upscale photo.jpg --model flare --scale 4
   upres batch ./photos/ --output ./upscaled/ --concurrency 3
   upres models
   upres jobs
@@ -24,23 +24,12 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif"}
 VIDEO_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm", ".gif"}
 
 MODELS_LIST = [
-    ("wavespeed-ai/real-esrgan",            "Image Upscale",   "$0.0024/image", "Fast, best value"),
-    ("wavespeed-ai/image-upscaler",         "Image Upscale",   "$0.01/image",   "2K/4K/8K with detail preservation"),
-    ("wavespeed-ai/ultimate-image-upscaler","Image Upscale",   "$0.01/image",   "Most advanced, reimagines detail"),
-    ("wavespeed-ai/seedvr2/image",          "Image Upscale",   "$0.01/image",   "ByteDance SeedVR2, sharp & detailed"),
-    ("bria/increase-resolution",            "Image Upscale",   "$0.04/image",   "Preservation-first, no content drift"),
-    ("clarity-ai/crystal-upscaler",         "Image Upscale",   "Pay per use",   "Target megapixels + creativity control"),
-    ("recraft-ai/recraft-crisp-upscale",    "Image Enhance",   "Pay per use",   "Textures + portraits"),
-    ("recraft-ai/recraft-creative-upscale", "Image Enhance",   "$0.25/image",   "Generative enhancement"),
-    ("wavespeed-ai/phota/enhance",          "Image Enhance",   "$0.09/image",   "Batch up to 4 images"),
-    ("wavespeed-ai/z-image-turbo/image-to-image","Image Enhance","$0.01/image", "Strength-controlled enhance"),
-    ("wavespeed-ai/video-upscaler",         "Video Upscale",   "$0.005-0.02/s", "Fast 720p-4K, best value"),
-    ("wavespeed-ai/video-upscaler-pro",     "Video Upscale",   "$0.03-0.05/s",  "Motion-aware, artifact cleanup"),
-    ("wavespeed-ai/ultimate-video-upscaler","Video Upscale",   "$0.02-0.08/s",  "Highest quality 4K"),
-    ("wavespeed-ai/seedvr2/video",          "Video Upscale",   "$0.02-0.05/s",  "16B param, frame-consistent"),
-    ("bytedance/video-upscaler",            "Video Upscale",   "$0.007-0.029/s","ByteDance fine-detail 4K"),
-    ("bria/fibo/video-upscaler",            "Video Upscale",   "$0.14/s",        "Temporal consistency, multi-codec"),
-    ("runwayml/upscale-v1",                 "Video Upscale",   "$0.02/s",        "One-click 4K by RunwayML"),
+    ("flare",    "Image Upscale",  "plan quota", "Everyday photos, fastest default"),
+    ("prism",    "Image Upscale",  "plan quota", "Text, logos, product shots"),
+    ("lumen",    "Image Upscale",  "plan quota", "Max detail recovery, up to 8x"),
+    ("mirage",   "Image Enhance",  "plan quota", "Invents new detail — art only"),
+    ("motion",   "Video Upscale",  "plan minutes", "Fast 4K for Sora/Kling/Runway"),
+    ("motion-x", "Video Upscale",  "plan minutes", "Cinema-grade, slower"),
 ]
 
 
@@ -53,8 +42,8 @@ def _resolve_model(model_arg: Optional[str], file_path: Optional[str]) -> str:
     if file_path:
         ext = Path(file_path).suffix.lower()
         if ext in VIDEO_EXTS:
-            return "wavespeed-ai/video-upscaler"
-    return "wavespeed-ai/image-upscaler"
+            return "motion"
+    return "flare"
 
 
 def _resolve_output(input_path: str, output_arg: Optional[str]) -> str:
@@ -213,7 +202,7 @@ def main() -> None:
     # upscale
     p_up = subparsers.add_parser("upscale", help="Upscale a single image or video")
     p_up.add_argument("input", help="Local file path or URL")
-    p_up.add_argument("--model", help="Model ID (default: wavespeed-ai/image-upscaler)")
+    p_up.add_argument("--model", help="Model ID (default: flare for images, motion for video)")
     p_up.add_argument("--scale", type=int, default=4, help="Scale factor 2-8 (default: 4)")
     p_up.add_argument("--resolution", default="4k", help="Target resolution (2k/4k/8k/1080p)")
     p_up.add_argument("--output", help="Output file path")

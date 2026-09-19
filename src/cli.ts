@@ -5,7 +5,7 @@ import os from "node:os";
 import { UpresClient } from "./client.js";
 import { MODELS, DEFAULT_IMAGE_MODEL, DEFAULT_VIDEO_MODEL } from "./models.js";
 
-const VERSION = "0.1.0";
+const VERSION = "0.2.0";
 
 function parseArgs(argv: string[]): { command: string; args: string[]; flags: Record<string, string | boolean> } {
   const args: string[] = [];
@@ -47,9 +47,8 @@ COMMANDS
   version              Print version
 
 OPTIONS
-  --model <id>         Model ID (default: wavespeed-ai/image-upscaler)
-  --scale <n>          Scale factor 2-8 (image only, default: 4)
-  --resolution <res>   Target resolution: 2k, 4k, 8k, 720p, 1080p (default: 4k)
+  --model <id>         Model ID (default: flare for images, motion for video)
+  --scale <n>          Scale factor 2-8 (default: 4)
   --output <path>      Output file or directory
   --api-key <key>      API key (or set UPRES_API_KEY env var)
   --wait               Wait for job to complete (default: true)
@@ -60,22 +59,23 @@ OPTIONS
   --help               Show help
 
 EXAMPLES
-  upres upscale photo.jpg --model real-esrgan --scale 4
-  upres upscale photo.jpg --model wavespeed-ai/image-upscaler --resolution 8k --output out.jpg
-  upres batch ./photos/ --model wavespeed-ai/real-esrgan --output ./upscaled/
+  upres upscale photo.jpg --model flare --scale 4
+  upres upscale photo.jpg --model lumen --scale 8 --output out.jpg
+  upres upscale clip.mp4 --model motion
+  upres batch ./photos/ --model flare --output ./upscaled/
   upres models
   upres jobs --limit 10 --status completed
   upres account
 
 API KEY
-  1. Get a free key at https://upres.ai/account/api-keys
+  1. Get a Studio key at https://upres.ai/account/api-keys
   2. Export: UPRES_API_KEY=upres_yourkey
   3. Or save: echo '{"apiKey":"upres_yourkey"}' > ~/.config/upres/config.json
 
 PRICING
-  Free: 5 ops/month
-  Pro:  $19/month — 100 ops, HD output, no watermark
-  Biz:  $49/month — unlimited + batch API + all models
+  Free:    3 upscales/month
+  Creator: $9/month — 50 stills + 20 min 4K video
+  Studio:  $39/month — 250 stills + 90 min 4K video + API
 
   https://upres.ai/pricing
 `);
@@ -83,7 +83,7 @@ PRICING
 
 function resolveModel(modelArg: string | undefined, filePath: string): string {
   if (modelArg) {
-    // Allow short aliases like "real-esrgan"
+    // Allow short aliases like "flare" or "motion"
     const found = MODELS.find(
       (m) => m.id === modelArg || m.id.endsWith(`/${modelArg}`) || m.name.toLowerCase() === modelArg.toLowerCase()
     );

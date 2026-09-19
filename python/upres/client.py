@@ -65,7 +65,7 @@ class UpresClient:
         from upres import UpresClient
 
         client = UpresClient()
-        job = client.create_job_from_file("photo.jpg", model="wavespeed-ai/real-esrgan")
+        job = client.create_job_from_file("photo.jpg", model="flare")
         completed = client.wait_for_job(job["id"])
         client.download_result(completed, "photo_upscaled.jpg")
     """
@@ -106,7 +106,7 @@ class UpresClient:
         self,
         image_url: str,
         *,
-        model: str = "wavespeed-ai/image-upscaler",
+        model: str = "flare",
         scale: int = 4,
     ) -> dict[str, Any]:
         """Submit an upscale job using a publicly accessible image URL."""
@@ -117,7 +117,7 @@ class UpresClient:
         self,
         file_path: str | Path,
         *,
-        model: str = "wavespeed-ai/image-upscaler",
+        model: str = "flare",
         scale: int = 4,
     ) -> dict[str, Any]:
         """Submit an upscale job by uploading a local file.

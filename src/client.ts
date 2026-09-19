@@ -66,7 +66,7 @@ export class UpresClient {
       if (res.status === 402) {
         console.error(
           `Error: Monthly quota exceeded (used ${err.used ?? "?"}/${err.quota ?? "?"}).\n` +
-            `  Upgrade to Business tier at https://upres.ai/pricing`
+            `  Upgrade to Studio at https://upres.ai/pricing`
         );
         process.exit(1);
       }

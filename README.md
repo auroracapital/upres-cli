@@ -5,11 +5,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/auroracapital/upres-cli?style=flat-square)](https://github.com/auroracapital/upres-cli/stargazers)
 
-Official CLI + SDK for **[upres.ai](https://upres.ai)** — AI image and video upscaling powered by Real-ESRGAN, SeedVR2, RunwayML, Bria, and more. One API, 17 state-of-the-art models, up to 8K output.
+Official CLI + SDK for **[upres.ai](https://upres.ai)** — AI image and video upscaling. One API, 6 specialist models (Flare, Prism, Lumen, Mirage, Motion, Motion X), up to 8K output.
 
 ```
-$ upres upscale photo.jpg --model wavespeed-ai/image-upscaler --resolution 4k
-Submitting job... model=wavespeed-ai/image-upscaler
+$ upres upscale photo.jpg --model flare --scale 4
+Submitting job... model=flare
 Job created: 550e8400-e29b-41d4-a716-446655440000 (status: pending)
 Waiting for result.......
 Downloading to photo_upscaled.jpg... done.
@@ -25,7 +25,7 @@ Result: photo_upscaled.jpg
 - **Upscayl** is great for one-offs but can't handle bulk exports or CI pipelines
 - **Every other SaaS upscaler** either watermarks your output, caps resolution at 2K, or charges per image with no monthly plan
 
-upres.ai gives you a clean REST API, 17 models including the latest SeedVR2 and RunwayML, batch processing, and predictable pricing starting at $49/mo.
+upres.ai gives you a clean REST API, 6 specialist models, batch processing, and predictable pricing starting at $9/mo on the Creator launch deal.
 
 ---
 
@@ -41,21 +41,21 @@ Or install globally:
 
 ```bash
 npm install -g upres-cli
-upres upscale photo.jpg --model wavespeed-ai/image-upscaler --resolution 8k --output photo_8k.jpg
+upres upscale photo.jpg --model lumen --scale 8 --output photo_8k.jpg
 ```
 
 ### Python
 
 ```bash
 pip install upres-ai
-upres upscale photo.jpg --model wavespeed-ai/image-upscaler --resolution 4k
+upres upscale photo.jpg --model flare --scale 4
 ```
 
 ---
 
 ## Authentication
 
-1. Sign up at [upres.ai](https://upres.ai) (free — 5 ops/month)
+1. Sign up at [upres.ai](https://upres.ai) (free — 3 upscales/month)
 2. Go to [upres.ai/account/api-keys](https://upres.ai/account/api-keys)
 3. Generate a key — it's shown once
 
@@ -78,15 +78,15 @@ Key resolution order: `--api-key` flag → `UPRES_API_KEY` env var → `~/.confi
 
 ```bash
 # Upscale a single image (local file or URL)
-upres upscale photo.jpg --model wavespeed-ai/image-upscaler --resolution 4k
-upres upscale photo.jpg --model wavespeed-ai/real-esrgan --scale 4 --output out.jpg
-upres upscale https://example.com/photo.jpg --resolution 8k
+upres upscale photo.jpg --model flare --scale 4
+upres upscale photo.jpg --model lumen --scale 8 --output out.jpg
+upres upscale https://example.com/photo.jpg --model prism
 
-# Upscale video
-upres upscale clip.mp4 --model wavespeed-ai/video-upscaler --resolution 4k
+# Upscale video (AI-generated video from Sora, Kling, Runway etc.)
+upres upscale clip.mp4 --model motion --scale 4
 
 # Batch upscale a folder
-upres batch ./photos/ --model wavespeed-ai/real-esrgan --output ./upscaled/ --concurrency 5
+upres batch ./photos/ --model flare --output ./upscaled/ --concurrency 5
 
 # List available models
 upres models
@@ -109,7 +109,7 @@ const client = new UpresClient(); // reads UPRES_API_KEY from env
 
 // Upscale a local file
 const job = await client.createJobFromFile("photo.jpg", {
-  model: "wavespeed-ai/image-upscaler",
+  model: "flare",
   scale: 4,
 });
 
@@ -133,7 +133,7 @@ from upres import UpresClient
 with UpresClient() as client:                        # reads UPRES_API_KEY from env
     job = client.create_job_from_file(
         "photo.jpg",
-        model="wavespeed-ai/image-upscaler",
+        model="flare",
         scale=4,
     )
     completed = client.wait_for_job(job["id"])
@@ -159,29 +159,32 @@ The Python SDK uses `httpx` — async-ready, no heavy dependencies.
 
 ## Models
 
-17 models across image upscale, image enhance, and video upscale.
+6 specialist models across image and video. Each one tells you up front whether it invents detail or leaves your file alone.
 
-| Category | Highlight |
-|---|---|
-| Image Upscale | Real-ESRGAN · SeedVR2 · Bria · Crystal · Ultimate |
-| Image Enhance | Recraft Crisp/Creative · Phota · Z-Image Turbo |
-| Video Upscale | SeedVR2 Video · RunwayML · ByteDance · Bria FiBO |
+| Model | Kind | Best for |
+|---|---|---|
+| `flare` | Image | Everyday photos, fastest default |
+| `prism` | Image | Text, logos, product shots — keeps edges true |
+| `lumen` | Image | Maximum detail recovery for print, up to 8x |
+| `mirage` | Image | Invents new detail — art and hero images |
+| `motion` | Video | Fast 4K finish for Sora/Kling/Runway clips |
+| `motion-x` | Video | Cinema-grade, for film and commercials |
 
-Full model list with params and pricing: [docs/models.md](docs/models.md) · [upres.ai/models](https://upres.ai/models)
+Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [api.upres.ai/v1/openapi.json](https://api.upres.ai/v1/openapi.json)
 
 ---
 
 ## Pricing
 
-| Plan | Price | Ops/mo | API | Watermark |
+| Plan | Price | Includes | API | Watermark |
 |---|---|---|---|---|
-| **Free** | $0 | 5 | — | Yes |
-| **Pro** | $19/mo | 100 | — | No |
-| **Business** | $49/mo | Unlimited | **Yes** | No |
+| **Free** | $0 | 3 upscales/mo | — | Yes |
+| **Creator** | $9/mo (launch deal, was $19) | 50 stills + 20 min 4K video/mo | — | No |
+| **Studio** | $39/mo | 250 stills + 90 min 4K video/mo | **Yes** | No |
 
-**Business tier unlocks the full API, batch processing, all 17 models, and no output watermark.**
+**Studio tier unlocks the full API, batch processing, and no output watermark.**
 
-[Compare plans →](https://upres.ai/pricing) · [vs. Topaz →](https://upres.ai/compare/topaz) · [vs. Upscayl →](https://upres.ai/compare/upscayl)
+[Compare plans →](https://upres.ai/pricing) · [vs. Topaz →](https://upres.ai/topaz-alternative) · [vs. Upscayl →](https://upres.ai/compare/upscayl)
 
 ---
 

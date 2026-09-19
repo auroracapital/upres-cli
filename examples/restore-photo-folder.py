@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Restore and enhance a folder of photos using Recraft Crisp Upscale.
+Restore and enhance a folder of photos using Lumen.
 Great for old/scanned photos, portraits, and archival work.
 
 Usage:
@@ -23,7 +23,7 @@ except ImportError:
 
 INPUT_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("./old-photos")
 OUTPUT_DIR = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("./restored")
-MODEL = os.environ.get("UPRES_MODEL", "recraft-ai/recraft-crisp-upscale")
+MODEL = os.environ.get("UPRES_MODEL", "lumen")
 CONCURRENCY = 3
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif"}

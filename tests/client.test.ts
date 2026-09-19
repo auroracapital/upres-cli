@@ -24,7 +24,7 @@ function mockResponse(body: unknown, status = 200): Response {
 const MOCK_JOB: Job = {
   id: "550e8400-e29b-41d4-a716-446655440000",
   status: "completed",
-  model: "wavespeed-ai/real-esrgan",
+  model: "flare",
   scale: 4,
   result_url: "https://cdn.upres.ai/results/abc123.png",
   error: null,
@@ -48,7 +48,7 @@ describe("UpresClient", () => {
 
     const client = new UpresClient();
     const job = await client.createJobFromUrl("https://example.com/photo.jpg", {
-      model: "wavespeed-ai/real-esrgan",
+      model: "flare",
       scale: 4,
     });
 

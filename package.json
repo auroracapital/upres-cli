@@ -1,6 +1,6 @@
 {
   "name": "upres-cli",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Official CLI + SDK for upres.ai — AI image & video upscaling",
   "type": "module",
   "main": "./dist/client.js",
@@ -35,8 +35,8 @@
     "ai",
     "upscaling",
     "cli",
-    "real-esrgan",
-    "seedvr2",
+    "flare",
+    "motion",
     "image-processing",
     "video-upscaling",
     "8k",

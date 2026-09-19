@@ -14,7 +14,7 @@ import { UpresClient } from "upres-cli";
 
 const INPUT_DIR = process.argv[2] ?? "./photos";
 const OUTPUT_DIR = process.argv[3] ?? "./upscaled";
-const MODEL = process.env.UPRES_MODEL ?? "wavespeed-ai/image-upscaler";
+const MODEL = process.env.UPRES_MODEL ?? "flare";
 const SCALE = Number(process.env.UPRES_SCALE ?? 4);
 const CONCURRENCY = 3;
 

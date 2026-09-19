@@ -17,7 +17,7 @@ const INPUT_DIR = process.argv[2] ?? "./raw-products";
 const OUTPUT_DIR = process.argv[3] ?? "./publish-ready";
 
 // Best model for product photos — sharpens edges, preserves colors
-const MODEL = "wavespeed-ai/ultimate-image-upscaler";
+const MODEL = "prism";
 const SCALE = 4;
 const CONCURRENCY = 5;
 

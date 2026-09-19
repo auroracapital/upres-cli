@@ -34,8 +34,8 @@ OUTPUT="${DIR}/${BASENAME}_4k.jpg"
 
 echo "[upres] Upscaling $INPUT..."
 upres upscale "$INPUT" \
-  --model wavespeed-ai/image-upscaler \
-  --resolution 4k \
+  --model flare \
+  --scale 4 \
   --output "$OUTPUT"
 
 if [ $? -eq 0 ]; then
@@ -71,7 +71,7 @@ For collections of 50+ images, use the batch CLI instead:
 
 ```bash
 upres batch ~/LightroomExports/Session-2024/ \
-  --model wavespeed-ai/image-upscaler \
+  --model flare \
   --output ~/LightroomExports/Session-2024-4K/ \
   --concurrency 5
 ```
@@ -80,9 +80,9 @@ upres batch ~/LightroomExports/Session-2024/ \
 
 | Scenario | Model |
 |---|---|
-| General photography | `wavespeed-ai/image-upscaler` |
-| Portrait / face detail | `recraft-ai/recraft-crisp-upscale` |
-| Maximum quality | `wavespeed-ai/ultimate-image-upscaler` |
-| Fastest / cheapest | `wavespeed-ai/real-esrgan` |
+| General photography | `flare` |
+| Text / logos / product | `prism` |
+| Maximum quality | `lumen` |
+| Invents new detail | `mirage` |
 
 Full model list: `upres models` or https://upres.ai/models
