@@ -12,7 +12,7 @@ describe("upres MCP stdio protocol", () => {
     expect(res.result.capabilities.tools).toEqual({});
   });
 
-  test("tools/list exposes the five upscale tools", async () => {
+  test("tools/list exposes the catalogue tools", async () => {
     const res = (await handleMessage({
       jsonrpc: "2.0",
       id: 2,
@@ -20,6 +20,7 @@ describe("upres MCP stdio protocol", () => {
     })) as { result: { tools: { name: string }[] } };
     const names = res.result.tools.map((t) => t.name).sort();
     expect(names).toEqual([
+      "upres_enhance_audio",
       "upres_get_credits",
       "upres_get_job",
       "upres_list_models",
@@ -41,8 +42,16 @@ describe("upres MCP stdio protocol", () => {
       "prism",
       "lumen",
       "mirage",
+      "hush",
+      "keen",
+      "visage",
+      "atelier",
       "motion",
       "motion-x",
+      "still",
+      "cadence",
+      "atelier-x",
+      "voice",
     ]);
   });
 

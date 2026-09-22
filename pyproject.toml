@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "upres-ai"
-version = "0.1.0"
-description = "Official Python SDK + CLI for upres.ai — AI image & video upscaling"
+version = "0.2.0"
+description = "Official Python SDK + CLI for upres.ai — image, video, and speech restoration"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
@@ -14,8 +14,9 @@ keywords = [
   "ai",
   "upscaling",
   "image-processing",
-  "real-esrgan",
-  "seedvr2",
+  "denoise",
+  "flare",
+  "voice",
   "video-upscaling",
   "cli",
   "api",

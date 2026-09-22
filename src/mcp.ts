@@ -6,9 +6,9 @@
  *   UPRES_API_KEY=upres_... npx upres-cli mcp
  *   claude mcp add upres -- npx -y upres-cli mcp
  */
-import { MODELS } from "./models.js";
+import { AUDIO_MODELS, IMAGE_MODELS, MODELS, VIDEO_MODELS } from "./models.js";
 
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 const DEFAULT_BASE_URL = "https://api.upres.ai/v1";
 
 type Json = Record<string, unknown>;
@@ -44,8 +44,7 @@ async function api<T>(method: string, endpoint: string, body?: unknown): Promise
 const TOOLS = [
   {
     name: "upres_list_models",
-    description:
-      "List UpRes upscale models (flare, prism, lumen, mirage, motion, motion-x) with use cases.",
+    description: "List the 14 public UpRes aliases for image, video, and speech.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false },
   },
   {
@@ -55,17 +54,18 @@ const TOOLS = [
   },
   {
     name: "upres_upscale_image",
-    description: "Submit an image upscale job from a public URL. Models: flare, prism, lumen, mirage.",
+    description:
+      "Submit an image job from a public URL. Upscale: flare, prism, lumen, mirage. Restore: hush, keen, visage, atelier. Scale is ignored when the alias does not enlarge.",
     inputSchema: {
       type: "object",
       properties: {
         image_url: { type: "string", description: "Public HTTPS URL of the image" },
         model: {
           type: "string",
-          enum: ["flare", "prism", "lumen", "mirage"],
-          description: "Image model. Default flare.",
+          enum: IMAGE_MODELS.map((m) => m.id),
+          description: "Image alias. Default flare.",
         },
-        scale: { type: "integer", enum: [2, 4, 8], description: "Scale multiplier. Default 4." },
+        scale: { type: "integer", enum: [2, 4, 8], description: "Scale multiplier. Default 4. Ignored for hush, keen, and visage." },
       },
       required: ["image_url"],
       additionalProperties: false,
@@ -73,19 +73,37 @@ const TOOLS = [
   },
   {
     name: "upres_upscale_video",
-    description: "Submit a video upscale job from a public URL. Models: motion, motion-x.",
+    description:
+      "Submit a video job from a public URL. motion and motion-x upscale. still denoises, cadence interpolates frames, atelier-x runs still then motion-x.",
     inputSchema: {
       type: "object",
       properties: {
         video_url: { type: "string", description: "Public HTTPS URL of the video" },
         model: {
           type: "string",
-          enum: ["motion", "motion-x"],
-          description: "Video model. Default motion.",
+          enum: VIDEO_MODELS.map((m) => m.id),
+          description: "Video alias. Default motion.",
         },
-        scale: { type: "integer", enum: [2, 4], description: "Scale multiplier. Default 4." },
+        scale: { type: "integer", enum: [2, 4], description: "Scale multiplier. Default 4. Ignored for still and cadence." },
       },
       required: ["video_url"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "upres_enhance_audio",
+    description: "Submit a speech job from a public URL. voice denoises speech and extends it to 48 kHz. Music is not supported.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        audio_url: { type: "string", description: "Public HTTPS URL of wav, mp3, m4a, or flac speech" },
+        model: {
+          type: "string",
+          enum: AUDIO_MODELS.map((m) => m.id),
+          description: "Audio alias. Default voice.",
+        },
+      },
+      required: ["audio_url"],
       additionalProperties: false,
     },
   },
@@ -152,6 +170,15 @@ async function callTool(name: string, args: Json): Promise<unknown> {
         image_url: video_url,
         model: args.model ?? "motion",
         scale: args.scale ?? 4,
+      });
+      return text(job);
+    }
+    case "upres_enhance_audio": {
+      const audio_url = String(args.audio_url ?? "");
+      if (!audio_url) throw new Error("audio_url is required");
+      const job = await api("POST", "/jobs", {
+        image_url: audio_url,
+        model: args.model ?? "voice",
       });
       return text(job);
     }

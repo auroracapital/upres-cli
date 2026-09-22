@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/auroracapital/upres-cli?style=flat-square)](https://github.com/auroracapital/upres-cli/stargazers)
 
-Official CLI + SDK for **[upres.ai](https://upres.ai)** — AI image and video upscaling. One API, 6 specialist models (Flare, Prism, Lumen, Mirage, Motion, Motion X), up to 8K output.
+Official CLI + SDK for **[upres.ai](https://upres.ai)** — image, video, and speech restoration. One API, 14 public aliases, up to 8K output.
 
 ```
 $ upres upscale photo.jpg --model flare --scale 4
@@ -25,7 +25,7 @@ Result: photo_upscaled.jpg
 - **Upscayl** is great for one-offs but can't handle bulk exports or CI pipelines
 - **Every other SaaS upscaler** either watermarks your output, caps resolution at 2K, or charges per image with no monthly plan
 
-upres.ai gives you a clean REST API, 6 specialist models, batch processing, and predictable pricing starting at $9/mo on the Creator launch deal.
+upres.ai gives you a clean REST API, 14 public aliases, batch processing, and predictable pricing starting at $9/mo on the Creator launch deal.
 
 ---
 
@@ -150,7 +150,7 @@ The Python SDK uses `httpx` — async-ready, no heavy dependencies.
 | Example | What it does |
 |---|---|
 | [batch-upscale-folder.js](examples/batch-upscale-folder.js) | Upscale all images in a folder with configurable concurrency |
-| [restore-photo-folder.py](examples/restore-photo-folder.py) | Restore old/scanned photos using Recraft Crisp Upscale |
+| [restore-photo-folder.py](examples/restore-photo-folder.py) | Restore old/scanned photos with Lumen |
 | [ecommerce-pipeline.js](examples/ecommerce-pipeline.js) | Product image pipeline: raw shots → 4K → publish-ready |
 | [lightroom-export-hook.md](examples/lightroom-export-hook.md) | Auto-upscale Lightroom exports via post-processing hook |
 | [figma-plugin-stub.md](examples/figma-plugin-stub.md) | Figma plugin integration guide |
@@ -159,16 +159,24 @@ The Python SDK uses `httpx` — async-ready, no heavy dependencies.
 
 ## Models
 
-6 specialist models across image and video. Each one tells you up front whether it invents detail or leaves your file alone.
+14 public aliases across image, video, and speech. Each one tells you up front whether it invents detail or leaves your file alone. Aliases that do not enlarge ignore `--scale`.
 
-| Model | Kind | Best for |
+| Alias | Kind | Best for |
 |---|---|---|
 | `flare` | Image | Everyday photos, fastest default |
 | `prism` | Image | Text, logos, product shots — keeps edges true |
 | `lumen` | Image | Maximum detail recovery for print, up to 8x |
 | `mirage` | Image | Invents new detail — art and hero images |
-| `motion` | Video | Fast 4K finish for Sora/Kling/Runway clips |
+| `hush` | Image | Faithful denoise, same size as the source |
+| `keen` | Image | Deblur and sharpen, same size |
+| `visage` | Image | Faces only, does not enlarge |
+| `atelier` | Image | Hush, Visage if a portrait, then Lumen |
+| `motion` | Video | Fast 4K finish for AI video |
 | `motion-x` | Video | Cinema-grade, for film and commercials |
+| `still` | Video | Temporal denoise, resolution stays put |
+| `cadence` | Video | Frame interpolation, does not enlarge |
+| `atelier-x` | Video | Still, then Motion X |
+| `voice` | Speech | Speech denoise to 48 kHz. Not for music |
 
 Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [api.upres.ai/v1/openapi.json](https://api.upres.ai/v1/openapi.json)
 
@@ -208,7 +216,7 @@ Or in `claude_desktop_config.json` / Cursor:
 }
 ```
 
-Tools: `upres_list_models`, `upres_get_credits`, `upres_upscale_image`, `upres_upscale_video`, `upres_get_job`.
+Tools: `upres_list_models`, `upres_get_credits`, `upres_upscale_image`, `upres_upscale_video`, `upres_enhance_audio`, `upres_get_job`.
 
 ---
 
