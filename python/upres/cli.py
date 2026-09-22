@@ -18,18 +18,27 @@ from typing import Optional
 
 from .client import UpresClient, AuthError, QuotaExceededError, UpresError
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".tiff", ".tif"}
 VIDEO_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm", ".gif"}
+AUDIO_EXTS = {".wav", ".mp3", ".m4a", ".flac"}
 
 MODELS_LIST = [
-    ("flare",    "Image Upscale",  "plan quota", "Everyday photos, fastest default"),
-    ("prism",    "Image Upscale",  "plan quota", "Text, logos, product shots"),
-    ("lumen",    "Image Upscale",  "plan quota", "Max detail recovery, up to 8x"),
-    ("mirage",   "Image Enhance",  "plan quota", "Invents new detail — art only"),
-    ("motion",   "Video Upscale",  "plan minutes", "Fast 4K for Sora/Kling/Runway"),
-    ("motion-x", "Video Upscale",  "plan minutes", "Cinema-grade, slower"),
+    ("flare", "Image Upscale", "1 credit", "Everyday photos, fastest default"),
+    ("prism", "Image Upscale", "1 credit", "Text, logos, product shots"),
+    ("lumen", "Image Upscale", "1 credit", "Max detail recovery, up to 8x"),
+    ("mirage", "Image Upscale", "1 credit", "Invents new detail — art only"),
+    ("hush", "Image Clean", "1 credit", "Faithful denoise, same size"),
+    ("keen", "Image Restore", "1 credit", "Deblur and sharpen, same size"),
+    ("visage", "Image Restore", "1 credit", "Faces only, does not enlarge"),
+    ("atelier", "Image Studio", "2+ credits", "Hush, Visage if a portrait, then Lumen"),
+    ("motion", "Video Upscale", "1 credit", "Fast 4K for AI video"),
+    ("motion-x", "Video Upscale", "1 credit", "Cinema-grade, slower"),
+    ("still", "Video Clean", "1 credit", "Temporal denoise, same resolution"),
+    ("cadence", "Video Restore", "1 credit", "Frame interpolation, no enlarge"),
+    ("atelier-x", "Video Studio", "2 credits", "Still, then Motion X"),
+    ("voice", "Speech", "1 credit", "Speech denoise to 48 kHz, not music"),
 ]
 
 
@@ -41,6 +50,8 @@ def _resolve_model(model_arg: Optional[str], file_path: Optional[str]) -> str:
         return model_arg
     if file_path:
         ext = Path(file_path).suffix.lower()
+        if ext in AUDIO_EXTS:
+            return "voice"
         if ext in VIDEO_EXTS:
             return "motion"
     return "flare"
@@ -145,7 +156,10 @@ def cmd_batch(args: argparse.Namespace) -> None:
 
 
 def cmd_models() -> None:
-    categories = ["Image Upscale", "Image Enhance", "Video Upscale"]
+    categories: list[str] = []
+    for _m_id, m_cat, _price, _desc in MODELS_LIST:
+        if m_cat not in categories:
+            categories.append(m_cat)
     for cat in categories:
         print(f"\n{cat}")
         print("─" * 70)
@@ -191,7 +205,7 @@ def cmd_account(args: argparse.Namespace) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="upres",
-        description="upres-ai CLI — AI image & video upscaling",
+        description="upres-ai CLI — image, video, and speech restoration",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--version", action="version", version=f"upres-ai {VERSION}")
@@ -202,7 +216,7 @@ def main() -> None:
     # upscale
     p_up = subparsers.add_parser("upscale", help="Upscale a single image or video")
     p_up.add_argument("input", help="Local file path or URL")
-    p_up.add_argument("--model", help="Model ID (default: flare for images, motion for video)")
+    p_up.add_argument("--model", help="Public alias (default: flare, motion for video, voice for speech)")
     p_up.add_argument("--scale", type=int, default=4, help="Scale factor 2-8 (default: 4)")
     p_up.add_argument("--resolution", default="4k", help="Target resolution (2k/4k/8k/1080p)")
     p_up.add_argument("--output", help="Output file path")

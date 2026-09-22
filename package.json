@@ -1,7 +1,7 @@
 {
   "name": "upres-cli",
-  "version": "0.2.1",
-  "description": "Official CLI + SDK for upres.ai \u2014 AI image & video upscaling",
+  "version": "0.3.0",
+  "description": "Official CLI + SDK for upres.ai — image, video, and speech restoration",
   "type": "module",
   "main": "./dist/client.js",
   "exports": {
@@ -61,7 +61,11 @@
     "motion",
     "nodejs",
     "photo-enhancer",
+    "denoise",
+    "hush",
     "real-esrgan",
+    "visage",
+    "voice",
     "stable-diffusion-upscaler",
     "super-resolution",
     "topaz-alternative",

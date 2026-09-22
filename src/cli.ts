@@ -3,9 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { UpresClient } from "./client.js";
-import { MODELS, DEFAULT_IMAGE_MODEL, DEFAULT_VIDEO_MODEL } from "./models.js";
+import { MODELS, DEFAULT_AUDIO_MODEL, DEFAULT_IMAGE_MODEL, DEFAULT_VIDEO_MODEL } from "./models.js";
 
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 
 function parseArgs(argv: string[]): { command: string; args: string[]; flags: Record<string, string | boolean> } {
   const args: string[] = [];
@@ -48,7 +48,7 @@ COMMANDS
   version              Print version
 
 OPTIONS
-  --model <id>         Model ID (default: flare for images, motion for video)
+  --model <id>         Public alias (default: flare, motion for video, voice for speech)
   --scale <n>          Scale factor 2-8 (default: 4)
   --output <path>      Output file or directory
   --api-key <key>      API key (or set UPRES_API_KEY env var)
@@ -92,6 +92,8 @@ function resolveModel(modelArg: string | undefined, filePath: string): string {
   }
   const ext = path.extname(filePath).toLowerCase();
   const videoExts = [".mp4", ".mov", ".avi", ".mkv", ".webm", ".gif"];
+  const audioExts = [".wav", ".mp3", ".m4a", ".flac"];
+  if (audioExts.includes(ext)) return DEFAULT_AUDIO_MODEL;
   return videoExts.includes(ext) ? DEFAULT_VIDEO_MODEL : DEFAULT_IMAGE_MODEL;
 }
 
@@ -221,11 +223,22 @@ async function cmdBatch(args: string[], flags: Record<string, string | boolean>)
   console.log(`\nDone: ${done} succeeded, ${failed} failed. Output: ${outputDir}`);
 }
 
+const CATEGORY_LABEL: Record<string, string> = {
+  "image-upscale": "Image Upscale",
+  "image-clean": "Image Clean",
+  "image-restore": "Image Restore",
+  "image-studio": "Image Studio",
+  "video-upscale": "Video Upscale",
+  "video-clean": "Video Clean",
+  "video-restore": "Video Restore",
+  "video-studio": "Video Studio",
+  "audio-clean": "Speech",
+};
+
 function cmdModels(): void {
-  const categories = ["image-upscale", "image-enhance", "video-upscale"] as const;
+  const categories = [...new Set(MODELS.map((m) => m.category))];
   for (const cat of categories) {
-    const label = { "image-upscale": "Image Upscale", "image-enhance": "Image Enhance", "video-upscale": "Video Upscale" }[cat];
-    console.log(`\n${label}`);
+    console.log(`\n${CATEGORY_LABEL[cat] ?? cat}`);
     console.log("─".repeat(60));
     for (const m of MODELS.filter((x) => x.category === cat)) {
       console.log(`  ${m.id.padEnd(44)} ${m.price}`);

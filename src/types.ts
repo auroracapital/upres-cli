@@ -2,7 +2,16 @@
 
 export type JobStatus = "pending" | "processing" | "completed" | "failed";
 
-export type ModelCategory = "image-upscale" | "image-enhance" | "video-upscale";
+export type ModelCategory =
+  | "image-upscale"
+  | "image-clean"
+  | "image-restore"
+  | "image-studio"
+  | "video-upscale"
+  | "video-clean"
+  | "video-restore"
+  | "video-studio"
+  | "audio-clean";
 
 export interface Job {
   id: string;
