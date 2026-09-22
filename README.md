@@ -3,6 +3,8 @@
 [![npm version](https://img.shields.io/npm/v/upres-cli?style=flat-square)](https://www.npmjs.com/package/upres-cli)
 [![PyPI version](https://img.shields.io/pypi/v/upres-ai?style=flat-square)](https://pypi.org/project/upres-ai/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+
+> Star this repo if UpRes helps you.
 [![GitHub stars](https://img.shields.io/github/stars/auroracapital/upres-cli?style=flat-square)](https://github.com/auroracapital/upres-cli/stargazers)
 
 Official CLI + SDK for **[upres.ai](https://upres.ai)** — image, video, and speech restoration. One API, 14 public aliases, up to 8K output.
