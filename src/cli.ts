@@ -74,7 +74,7 @@ API KEY
   3. Or save: echo '{"apiKey":"upres_yourkey"}' > ~/.config/upres/config.json
 
 PRICING
-  Free:    3 upscales/month
+  Free:    5 upscales/month
   Creator: $9/month — 50 stills + 20 min 4K video
   Studio:  $39/month — 250 stills + 90 min 4K video + API
 

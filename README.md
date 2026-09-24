@@ -57,7 +57,7 @@ upres upscale photo.jpg --model flare --scale 4
 
 ## Authentication
 
-1. Sign up at [upres.ai](https://upres.ai) (free — 3 upscales/month)
+1. Sign up at [upres.ai](https://upres.ai) (free — 5 upscales/month)
 2. Go to [upres.ai/account/api-keys](https://upres.ai/account/api-keys)
 3. Generate a key — it's shown once
 
@@ -188,7 +188,7 @@ Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [
 
 | Plan | Price | Includes | API | Watermark |
 |---|---|---|---|---|
-| **Free** | $0 | 3 upscales/mo | — | Yes |
+| **Free** | $0 | 5 upscales/mo | — | Yes |
 | **Creator** | $9/mo (launch deal, was $19) | 50 stills + 20 min 4K video/mo | — | No |
 | **Studio** | $39/mo | 250 stills + 90 min 4K video/mo | **Yes** | No |
 
