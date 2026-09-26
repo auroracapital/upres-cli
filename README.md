@@ -189,7 +189,7 @@ Full model catalogue: [upres.ai/models](https://upres.ai/models) · Live spec: [
 | Plan | Price | Includes | API | Watermark |
 |---|---|---|---|---|
 | **Free** | $0 | 5 upscales/mo | — | Yes |
-| **Creator** | $9/mo (launch deal, was $19) | 50 stills + 20 min 4K video/mo | — | No |
+| **Creator** | $9/mo | 50 stills + 20 min 4K video/mo | — | No |
 | **Studio** | $39/mo | 250 stills + 90 min 4K video/mo | **Yes** | No |
 
 **Studio tier unlocks the full API, batch processing, and no output watermark.**
